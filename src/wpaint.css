@@ -1,31 +1,25 @@
-.windowpainter-app *
-{
+.windowpainter-app * {
     box-sizing: border-box;
 }
 
-.windowpainter-app > .controls
-{
-    margin: 5px;
+.windowpainter-app > .controls {
+    margin: 0 5px;
 }
 
-.windowpainter-app > .controls > table
-{
-    width: calc(100% + -2px); /* Blurry font rendering fix */
+.windowpainter-app > .controls > table {
+    width: 100%; /* Blurry font rendering fix */
 }
 
-.windowpainter-app > .buttons
-{
+.windowpainter-app > .buttons {
     width: 100%;
     padding: 5px;
 }
 
-.windowpainter-app .w96-textbox
-{
+.windowpainter-app .w96-textbox {
     width: 64px;
 }
 
-.windowpainter-app > .buttons > button
-{
+.windowpainter-app > .buttons > button {
     float: right;
     margin-left: 5px;
     height: 23px;

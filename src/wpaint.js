@@ -32,8 +32,8 @@ class WindowPainterApplication extends WApplication {
             title: "WindowPainter",
             icon: Theme.getIconUrl("exec", "small"),
             initialWidth: 450,
-            initialHeight: 215,
-            body: await w96.FS.readstr(`${releaseInfo.path}/wnd_main.html`),
+            initialHeight: 188,
+            body: await FS.readstr(`${releaseInfo.path}/wnd_main.html`),
             bodyClass: "windowpainter-app",
             center: true,
             taskbar: true,
@@ -42,6 +42,22 @@ class WindowPainterApplication extends WApplication {
         }, true);
 
         const body = wnd_main.getBodyContainer();
+
+        function generateTheme() {
+            const css = `
+                .titlebar {
+                    background: linear-gradient(${body.querySelector(".tb-activedegrees").value}deg, ${body.querySelector(".cl-activeleft").value} 0, ${body.querySelector(".cl-activeright").value} 100%);
+                }
+
+                .titlebar-title-disabled {
+                    background: linear-gradient(${body.querySelector(".tb-inactivedegrees").value}deg, ${body.querySelector(".cl-inactiveleft").value} 0, ${body.querySelector(".cl-inactiveright").value} 100%);
+                }
+            `
+            return css;
+        };
+
+        body.querySelector(".w96-button.apply").addEventListener("click", ()=>w96.ui.Theme.cssa(generateTheme()));
+
 
         const appBar = new w96.ui.MenuBar();
 
@@ -90,7 +106,7 @@ class WindowPainterApplication extends WApplication {
 
             {
                 type: "normal",
-                label: "Report issue",
+                label: "Report an issue",
                 onclick: ()=>window.open(`${releaseInfo.repo}/issues/new`, "_blank")
             },
 
@@ -119,7 +135,7 @@ class WindowPainterApplication extends WApplication {
     }
 }
 
-const appStyle = URL.createObjectURL(await w96.FS.toBlob(`${releaseInfo.path}/wpaint.css`));
+const appStyle = URL.createObjectURL(await FS.toBlob(`${releaseInfo.path}/wpaint.css`));
 await w96.sys.loader.loadStyleAsync(appStyle);
 URL.revokeObjectURL(appStyle);
 
