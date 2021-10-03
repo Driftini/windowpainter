@@ -9,7 +9,25 @@ class WindowPainterApplication extends WApplication {
     async main(argv) {
         super.main(argv);
 
-        const mainwnd = this.createWindow({
+        const releaseInfo = {
+            "version": "1.0-alpha1",
+            "date": "03/10/2021",
+            "repo": "https://github.com/Driftini/windowpainter"
+        }
+
+        function showPlaceHolderWindow() {
+                w96.ui.DialogCreator.create({
+                title: "",
+                body: `
+                    placeholder
+                    <br>
+                    If you see this in anything other than a prerelease, please <a target="_blank" href="${releaseInfo.repo}/issues/new">report the issue</a>.
+                `,
+                icon: "info"
+            });
+        };
+
+        const wndMain = this.createWindow({
             title: "WindowPainter",
             icon: Theme.getIconUrl("exec", "small"),
             initialWidth: 450,
@@ -90,19 +108,7 @@ class WindowPainterApplication extends WApplication {
             controlBoxStyle: "WS_CBX_MINCLOSE"
         }, true);
 
-        function showPlaceHolderWindow() {
-                w96.ui.DialogCreator.create({
-                title: "",
-                body: `
-                    placeholder
-                    <br>
-                    If you see this in anything other than a prerelease, please <a target="_blank" href="http://among.us">file an issue</a>.
-                `,
-                icon: "info"
-            })
-        }
-
-        const body = mainwnd.getBodyContainer();
+        const body = wndMain.getBodyContainer();
 
         const appBar = new w96.ui.MenuBar();
 
@@ -146,7 +152,13 @@ class WindowPainterApplication extends WApplication {
             {
                 type: "normal",
                 label: "GitHub repository",
-                onclick: ()=>showPlaceHolderWindow()
+                onclick: ()=>window.open(releaseInfo.repo, "_blank")
+            },
+
+            {
+                type: "normal",
+                label: "Report issue",
+                onclick: ()=>window.open(`${releaseInfo.repo}/issues/new`, "_blank")
             },
 
             {
@@ -159,15 +171,18 @@ class WindowPainterApplication extends WApplication {
                 onclick: ()=>w96.ui.DialogCreator.create({
                     title: "About WindowPainter",
                     body: `
-                        <span class="bold-noaa">WindowPainter 
-                    `                    
+                        <span class="bold-noaa">WindowPainter ${releaseInfo.version}</span> (3/10/2021)
+                        <br>
+                        Developed by <a href="https://github.com/Driftini" target="_blank">Driftini</a>
+                    `,
+                    icon: "info"
                 })
             }
         ]);
 
         body.querySelector('.appbar').replaceWith(appBar.getMenuDiv());
 
-        mainwnd.show();
+        wndMain.show();
     }
 }
 
@@ -202,7 +217,7 @@ Theme.cssa(`.windowpainter-app *
         margin-left: 5px;
         height: 23px;
         width: 75px;
-    }`)
+    }`);
 
 register({
     command: "wpaint",
