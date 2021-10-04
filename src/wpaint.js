@@ -3,7 +3,7 @@ const { Theme } = w96.ui;
 
 const releaseInfo = {
             "version": "1.0-alpha1",
-            "date": "03/10/2021",
+            "date": "04/10/2021",
             "repo": "https://github.com/Driftini/windowpainter",
             "path": "c:/local/wpaint"
         }
@@ -32,7 +32,7 @@ class WindowPainterApplication extends WApplication {
             title: "WindowPainter",
             icon: Theme.getIconUrl("exec", "small"),
             initialWidth: 450,
-            initialHeight: 188,
+            initialHeight: 195,
             body: await FS.readstr(`${releaseInfo.path}/wnd_main.html`),
             bodyClass: "windowpainter-app",
             center: true,
