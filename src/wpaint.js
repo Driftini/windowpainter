@@ -120,7 +120,7 @@ class WindowPainterApplication extends WApplication {
                 onclick: ()=>w96.ui.DialogCreator.create({
                     title: "About WindowPainter",
                     body: `
-                        <span class="bold-noaa">WindowPainter ${releaseInfo.version}</span> (3/10/2021)
+                        <span class="bold-noaa">WindowPainter ${releaseInfo.version}</span> (${releaseInfo.date})
                         <br>
                         Developed by <a href="https://github.com/Driftini" target="_blank">Driftini</a>
                     `,

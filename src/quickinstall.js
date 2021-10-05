@@ -1,5 +1,4 @@
 const urlPrefix = "https://raw.githubusercontent.com/Driftini/windowpainter/master/src"
-let done = 0
 
 let downloadList = [
 	{
@@ -14,6 +13,13 @@ let downloadList = [
 		"filename": "wnd_main.html",
 		"savepath": "c:/local/wpaint"
 	}
+]
+
+let done = 0
+
+const shortcutPaths = [
+	"c:/system/programs/Other",
+	"c:/user/desktop"
 ]
 
 console.group(`%c[ QuickInstall ]`, "color:#8af;font-weight:bold")
@@ -31,10 +37,11 @@ async function save(value) {
     await w96.FS.writestr(`${value.savepath}/${value.filename}`, value.content);
     done++;
     console.log(`${value.filename} saved. (${done}/${downloadList.length})`);
-
-    const shortcutPath = "c:/system/programs/Other"
-    if (!w96.FS.exists(shortcutPath)) w96.FS.mkdir(shortcutPath)
-    w96.shell.mkShortcut(`${shortcutPath}/WindowPainter.link`, "image2", "wpaint")
+	
+	for (let i = 0; i < shortcutPaths.length; i++) {
+		if (!w96.FS.exists(shortcutPaths[i])) w96.FS.mkdir(shortcutPaths[i]);
+    	w96.shell.mkShortcut(`${shortcutPaths[i]}/WindowPainter.link`, "image2", "wpaint");
+	}
 
     if (done == downloadList.length) {
     	console.log("All files have been saved. Rebooting...");
