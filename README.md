@@ -6,6 +6,8 @@ An app for https://windows96.net to easily change the colors of the default them
 > It is a good idea to make a backup of your Windows96 installation before installing WindowPainter in its current state to avoid possible data loss, even though it would obviously be unintended and very unlikely.
 
 ### Automatic (recommended)
+The quick installation script automatically pulls the latest (unstable) version of WindowPainter from the repository.
+
 Simply open your browser's developer tools console (usually accessible by pressing F12, Ctrl+I, Ctrl+Shift+I...) in Windows96 and run the following command.
 Do **NOT** place it in `c:/system/boot/apps`, as it will make Windows96 unable to boot.
 

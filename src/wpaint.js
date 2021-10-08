@@ -1,12 +1,12 @@
 const { register } = w96.app;
-const { Theme } = w96.ui;
+const { Theme, MenuBar, DialogCreator, OpenFileDialog, SaveFileDialog } = w96.ui;
 
 const releaseInfo = {
-            "version": "1.0-alpha1",
-            "date": "04/10/2021",
-            "repo": "https://github.com/Driftini/windowpainter",
-            "path": "c:/local/wpaint"
-        }
+    "version": "1.0-alpha1",
+    "date": "08/10/2021",
+    "repo": "https://github.com/Driftini/windowpainter",
+    "path": "c:/local/wpaint"
+}
 
 class WindowPainterApplication extends WApplication {
     constructor() {
@@ -17,7 +17,7 @@ class WindowPainterApplication extends WApplication {
         super.main(argv);
 
         function showPlaceHolderWindow() {
-                w96.ui.DialogCreator.create({
+            DialogCreator.create({
                 title: "",
                 body: `
                     placeholder
@@ -28,9 +28,11 @@ class WindowPainterApplication extends WApplication {
             });
         };
 
+        // Main Window //
+
         const wnd_main = this.createWindow({
             title: "WindowPainter",
-            icon: Theme.getIconUrl("exec", "small"),
+            icon: Theme.getIconUrl("image2", "small"),
             initialWidth: 450,
             initialHeight: 195,
             body: await FS.readstr(`${releaseInfo.path}/wnd_main.html`),
@@ -43,7 +45,7 @@ class WindowPainterApplication extends WApplication {
 
         const body = wnd_main.getBodyContainer();
 
-        function generateTheme() {
+        function generateThemeStyle() {
             const css = `
                 .titlebar {
                     background: linear-gradient(${body.querySelector(".tb-activedegrees").value}deg, ${body.querySelector(".cl-activeleft").value} 0, ${body.querySelector(".cl-activeright").value} 100%);
@@ -56,8 +58,24 @@ class WindowPainterApplication extends WApplication {
             return css;
         };
 
-        body.querySelector(".w96-button.apply").addEventListener("click", ()=>w96.ui.Theme.cssa(generateTheme()));
+        function generateThemeObject() {
+            const obj = {
+                "window_active": {
+                    "color1": body.querySelector(".cl-activeleft").value,
+                    "color2": body.querySelector(".cl-activeright").value,
+                    "degrees": body.querySelector(".tb-activedegrees").value
+                },
+                "window_inactive": {
+                    "color1": body.querySelector(".cl-inactiveleft").value,
+                    "color2": body.querySelector(".cl-inactiveright").value,
+                    "degrees": body.querySelector(".tb-inactivedegrees").value
+                }
+            };
 
+            return JSON.stringify(obj);
+        }
+
+        body.querySelector(".w96-button.apply").addEventListener("click", () => w96.ui.Theme.cssa(generateThemeStyle()));
 
         const appBar = new w96.ui.MenuBar();
 
@@ -65,25 +83,79 @@ class WindowPainterApplication extends WApplication {
             {
                 type: "normal",
                 label: "New (reset colors)",
-                onclick: ()=>showPlaceHolderWindow()
+                onclick: () => showPlaceHolderWindow()
             },
 
             {
                 type: "normal",
                 label: "Open...",
-                onclick: ()=>showPlaceHolderWindow()
+                onclick: () => {
+                    const wnd_open = new OpenFileDialog("c:/user", [".json"], async (file) => {
+                        if (!file) return;
+                        const fileContent = await FS.readstr(file);
+                        let themeObject
+
+                        try {
+                            themeObject = JSON.parse(fileContent);
+                        } catch (err) {
+                            DialogCreator.alert(`
+                                This is not a valid JSON file.
+                                <br>
+                                Please retry after fixing the syntax errors.
+                                <br>
+                                You can find more information in your browser's developer tools console.
+                            `, {
+                                title: "Error",
+                                icon: "error"
+                            });
+                            console.error(err);
+                            return;
+                        }
+
+                        if (!themeObject.window_active || !themeObject.window_inactive) {
+                            DialogCreator.alert("This file is not a valid WindowPainter preset.", {
+                                title: "Error",
+                                icon: "error"
+                            });
+                            return;
+                        } else {
+                            body.querySelector(".tb-activedegrees").value = themeObject.window_active.degrees;
+                            body.querySelector(".cl-activeleft").value = themeObject.window_active.color1;
+                            body.querySelector(".cl-activeright").value = themeObject.window_active.color2;
+
+                            body.querySelector(".tb-inactivedegrees").value = themeObject.window_inactive.degrees;
+                            body.querySelector(".cl-inactiveleft").value = themeObject.window_inactive.color1;
+                            body.querySelector(".cl-inactiveright").value = themeObject.window_inactive.color2;
+                        };
+                    });
+
+                    wnd_open.show();
+                }
             },
 
             {
                 type: "normal",
                 label: "Save",
-                onclick: ()=>showPlaceHolderWindow()
+                onclick: () => {
+                    DialogCreator.alert("Make sure to save your presets as .json files, else you won't be able to load them.", {
+                        events: {
+                            onclose: () => {
+                                const wnd_save = new SaveFileDialog("c:/user", [".json"], (path) => {
+                                    if (!path) return;
+                                    FS.writestr(path, generateThemeObject());
+                                });
+
+                                wnd_save.show();
+                            }
+                        }
+                    })
+                }
             },
 
             {
                 type: "normal",
                 label: "Save as...",
-                onclick: ()=>showPlaceHolderWindow()
+                onclick: () => showPlaceHolderWindow()
             },
 
             {
@@ -93,7 +165,7 @@ class WindowPainterApplication extends WApplication {
             {
                 type: "normal",
                 label: "Exit",
-                onclick: ()=>this.terminate()
+                onclick: () => this.terminate()
             }
         ]);
 
@@ -101,13 +173,13 @@ class WindowPainterApplication extends WApplication {
             {
                 type: "normal",
                 label: "GitHub repository",
-                onclick: ()=>window.open(releaseInfo.repo, "_blank")
+                onclick: () => window.open(releaseInfo.repo, "_blank")
             },
 
             {
                 type: "normal",
                 label: "Report an issue",
-                onclick: ()=>window.open(`${releaseInfo.repo}/issues/new`, "_blank")
+                onclick: () => window.open(`${releaseInfo.repo}/issues/new`, "_blank")
             },
 
             {
@@ -117,7 +189,7 @@ class WindowPainterApplication extends WApplication {
             {
                 type: "normal",
                 label: "About",
-                onclick: ()=>w96.ui.DialogCreator.create({
+                onclick: () => DialogCreator.create({
                     title: "About WindowPainter",
                     body: `
                         <span class="bold-noaa">WindowPainter ${releaseInfo.version}</span> (${releaseInfo.date})
@@ -143,8 +215,9 @@ register({
     command: "wpaint",
     type: "gui",
     cls: WindowPainterApplication,
+    filters: [".json"],
     meta: {
-        icon: Theme.getIconUrl("exec"),
+        icon: Theme.getIconUrl("image2"),
         friendlyName: "WindowPainter"
     }
 });
