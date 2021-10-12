@@ -1,2 +1,3 @@
 **/win96.d.ts
 **/*.sublime*
+/priv

@@ -39,16 +39,31 @@ Find a bug of any kind in WindowPainter? Don't hesitate to file an issue! Report
 If for any reason you feel like discussing anything regarding WindowPainter with me, the easiest choice would be joining the Windows96 official Discord server at **https://discord.gg/KCTaM75** and talking to me there. You can also find several other community-made apps there!
 
 ## Roadmap
-Current version: **1.0-alpha1**
+Current version: **1.0-alpha2**
 
-- [ ] **WindowPainter 1.0**
+### WindowPainter pre-1.x
+- [x] WindowPainter 1.0-alpha1
     - [x] Basic GUI
+- [x] WindowPainter 1.0-alpha2
+    - [x] Separated JS, CSS & HTML
     - [x] Titlebar color editing
-    - [ ] New/Open/Save
+    - [x] New/Open/Save
+- [ ] WindowPainter 1.0-beta1
+    - [ ] GUI Redesign #1 (Tabbed view)
+    - [ ] Themes don't get _fully_ replaced by the config
+    - [ ] Load config on boot
+
+### WindowPainter 1.x
+- [ ] **WindowPainter 1.0**
+    - [x] Titlebar color editing
+    - [x] New/Open/Save
+    - [ ] GUI Redesign #1 (Tabbed view)
+    - [ ] Load config on boot
+    - [ ] Config preview
 - [ ] **WindowPainter 1.1**
+    - [ ] Individual window styling
+    - [ ] Start Menu gradient editing
     - [ ] Background color editing
-    - [ ] Included presets
+    - [ ] Example configs
 - [ ] **WindowPainter 1.2**
-    - [ ] GUI redesign
-    - [ ] Font editing
-    - [ ] Theme preview
+    - [ ] Config switcher
