@@ -42,13 +42,13 @@ If for any reason you feel like discussing anything regarding WindowPainter with
 Current version: **1.0-alpha2**
 
 ### WindowPainter pre-1.x
-- [x] WindowPainter 1.0-alpha1
+- [x] **WindowPainter 1.0-alpha1**
     - [x] Basic GUI
-- [x] WindowPainter 1.0-alpha2
+- [x] **WindowPainter 1.0-alpha2**
     - [x] Separated JS, CSS & HTML
     - [x] Titlebar color editing
     - [x] New/Open/Save
-- [ ] WindowPainter 1.0-beta1
+- [ ] **WindowPainter 1.0-beta1**
     - [ ] GUI Redesign #1 (Tabbed view)
     - [ ] Themes don't get _fully_ replaced by the config
     - [ ] Load config on boot
